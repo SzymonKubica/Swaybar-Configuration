@@ -3,7 +3,7 @@ state=$(upower -i $(upower -e | grep 'BAT') | grep -E "state" | awk '{print $2}'
 
 charge_level="${percentage%%[%]*}"
 
-if [[ $((charge_level)) -lt 30 && "$state" == "discharging" ]]
+if [[ $((charge_level)) -lt 15 && "$state" == "discharging" ]]
 then
   swaynag -m "Low battery, please charge now." --background 09090950 --border-bottom AF0000 --button-background 09090950 --button-border-size 2
 fi
@@ -24,6 +24,11 @@ then
   battery_icon=""
 else
   battery_icon=""
+fi
+
+if [[ "$state" == "charging" ]]
+then
+  battery_icon=" $battery_icon"
 fi
 
 echo "$battery_icon  $percentage"
